@@ -1,0 +1,270 @@
+[
+  {
+    "id": "Q01",
+    "split": "dev",
+    "question_type": "direct",
+    "question": "Ai là tác giả tạo ra ngôn ngữ lập trình Python và ông bắt đầu làm việc tại viện nghiên cứu nào vào năm 1982?",
+    "expected_answer": "Guido van Rossum là tác giả tạo ra Python; ông bắt đầu làm việc tại CWI (viện nghiên cứu quốc gia Hà Lan) vào năm 1982.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 30,
+    "evidence_quote": "In 1982, Guido van Rossum, the creator of Python, started working at CWI, a Dutch national research institute.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q02",
+    "split": "dev",
+    "question_type": "rephrased",
+    "question": "Ngôn ngữ ABC được đội ngũ tại CWI thiết kế nhằm mục đích gì, và hạn chế chính khiến nó không thể dùng cho các chương trình phức tạp là gì?",
+    "expected_answer": "Ngôn ngữ ABC được thiết kế cho việc giảng dạy và tạo mẫu thử nghiệm (teaching and prototyping). Hạn chế của nó là thiếu các tính năng cần thiết để viết các chương trình nâng cao.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 30,
+    "evidence_quote": "He joined a team that was designing a new programming language, named ABC, for teaching and prototyping. ABC's simplicity was ideal for beginners, but the language lacked features required to write advanced programs.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q03",
+    "split": "dev",
+    "question_type": "direct",
+    "question": "Trong phần 1.2 (Input/output), tùy chọn nào của hàm print() cho phép tiếp tục in nội dung trên cùng một dòng thay vì tự động xuống dòng?",
+    "expected_answer": "Tùy chọn end (ví dụ: end=\"\").",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 11,
+    "evidence_quote": "By default, the print() function adds a newline character at the end of the output. The end option can be used to continue printing on the same line.",
+    "metadata_filter": {
+      "chapter": 1,
+      "section": "1.2"
+    }
+  },
+  {
+    "id": "Q04",
+    "split": "dev",
+    "question_type": "conditional_exception",
+    "question": "Khi sử dụng ép kiểu rõ ràng int() đối với một số thực (float) trong Python, phần thập phân sẽ được xử lý như thế nào? Kết quả của int(5.9) là gì?",
+    "expected_answer": "Hàm int() sẽ cắt bỏ hoàn toàn phần thập phân (không làm tròn). int(5.9) trả về kết quả là 5.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 41,
+    "evidence_quote": "int() converts a data type to an integer. Any fractional part is removed. Ex: int(5.9) produces 5.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q05",
+    "split": "dev",
+    "question_type": "direct",
+    "question": "Thuật ngữ REPL là viết tắt của từ gì và bao gồm 4 bước lặp lại nào trong Python shell?",
+    "expected_answer": "REPL là viết tắt của 'read-eval-print loop'. 4 bước hoạt động là: 1. Read/input some code, 2. Evaluate/run the code, 3. Print any results, 4. Loop back to step 1.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 39,
+    "evidence_quote": "REPL stands for 'read-eval-print loop,' which describes the repetitive nature of a shell: 1. Read/input some code 2. Evaluate/run the code 3. Print any results 4. Loop back to step 1",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q06",
+    "split": "dev",
+    "question_type": "direct",
+    "question": "Trong phần 3.5 (Tuple basics), lý do kỹ thuật nào giúp tuple tiêu tốn ít bộ nhớ hơn và cho tốc độ tạo/truy xuất nhanh hơn so với list?",
+    "expected_answer": "Tuple có thuộc tính bất biến (immutable) và kích thước cố định (fixed size), giúp tiết kiệm bộ nhớ và đạt hiệu năng tối ưu hơn list.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_evidence": [
+      [{"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 81}],
+      [{"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 82}]
+    ],
+    "min_evidence": 1,
+    "evidence_quote": "Tuples are immutable and have a fixed size, so tuples use less memory. Overall, tuples are faster to create and access, resulting in better performance that can be noticeable with large amounts of data.",
+    "metadata_filter": {
+      "chapter": 3,
+      "section": "3.5"
+    }
+  },
+  {
+    "id": "Q07",
+    "split": "dev",
+    "question_type": "rephrased",
+    "question": "Hãy giải thích sự khác biệt cơ bản giữa đối tượng bất biến (immutable) và đối tượng có thể thay đổi (mutable) thông qua ví dụ về tuple và list?",
+    "expected_answer": "Đối tượng immutable (như tuple) không thể sửa đổi sau khi tạo ra, trong khi đối tượng mutable (như list) có thể thay đổi/thêm/xóa phần tử sau khi tạo.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 81,
+    "evidence_quote": "An immutable object cannot be modified after creation. A mutable object can be modified after creation. Tuples are immutable, whereas lists are mutable.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q08",
+    "split": "dev",
+    "question_type": "conditional_exception",
+    "question": "Trình tự đánh giá biểu thức điều kiện (ternary operator) dạng expression_if_true if condition else expression_if_false trong Python diễn ra như thế nào?",
+    "expected_answer": "Trình thông dịch đánh giá condition trước. Nếu condition đúng (True), expression_if_true được tính toán; nếu sai (False), expression_if_false được tính toán.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_evidence": [
+      [{"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 109}],
+      [{"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 110}]
+    ],
+    "min_evidence": 1,
+    "evidence_quote": "A conditional expression is evaluated by first checking the condition. If condition is true, expression_if_true is evaluated... Else, expression_if_false is evaluated...",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q09",
+    "split": "dev",
+    "question_type": "direct",
+    "question": "Khối lệnh else đi kèm với vòng lặp for hoặc while (loop else) sẽ được kích hoạt thực thi trong điều kiện nào?",
+    "expected_answer": "Khối loop else chỉ chạy khi vòng lặp hoàn thành tất cả các vòng lặp một cách bình thường mà không bị ngắt bởi câu lệnh break.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_evidence": [
+      [{"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 130}],
+      [{"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 131}]
+    ],
+    "min_evidence": 1,
+    "evidence_quote": "A loop else statement runs after the loop's execution is completed without being interrupted by a break statement.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q10",
+    "split": "dev",
+    "question_type": "conditional_exception",
+    "question": "Trong phần 5.4 (Break and continue), điểm khác biệt về luồng thực thi giữa câu lệnh continue và câu lệnh break khi gặp một điều kiện nhất định là gì?",
+    "expected_answer": "break thoát hoàn toàn khỏi vòng lặp ngay lập tức; trong khi continue chỉ bỏ qua phần còn lại của vòng lặp hiện tại và chuyển sang đánh giá lại biểu thức điều kiện của vòng lặp tiếp theo.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_evidence": [
+      {"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 127},
+      {"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 129}
+    ],
+    "min_evidence": 2,
+    "evidence_quote": "A break statement is used within a for or a while loop to allow the program execution to exit the loop once a given condition is triggered. / A continue statement allows for skipping the execution of the remainder of the loop without exiting the loop entirely.",
+    "metadata_filter": {
+      "chapter": 5,
+      "section": "5.4"
+    }
+  },
+  {
+    "id": "Q11",
+    "split": "dev",
+    "question_type": "rephrased",
+    "question": "Phân biệt khái niệm tham số (parameter) và đối số (argument) trong hàm Python?",
+    "expected_answer": "Argument (đối số) là giá trị thực tế được truyền vào hàm khi gọi hàm. Parameter (tham số) là biến đại diện cho dữ liệu đầu vào trong định nghĩa hàm.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 150,
+    "evidence_quote": "A function argument is a value passed as input during a function call. A function parameter is a variable representing the input in the function definition.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q12",
+    "split": "dev",
+    "question_type": "conditional_exception",
+    "question": "Cơ chế truyền tham số của Python được gọi là gì, và việc sửa đổi một đối số mutable bên trong hàm có làm thay đổi đối tượng đó bên ngoài hàm hay không?",
+    "expected_answer": "Cơ chế truyền tham số của Python là 'pass-by-object-reference'. Khi tham số là đối tượng mutable (như list), các thay đổi bên trong hàm sẽ xuất hiện và ảnh hưởng trực tiếp đến đối tượng bên ngoài hàm.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 152,
+    "evidence_quote": "Python uses a pass-by-object-reference system... A mutable object can be modified after creation. A function's changes to the object then appear outside the function.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q13",
+    "split": "dev",
+    "question_type": "direct",
+    "question": "Dòng lệnh if __name__ == '__main__': đặt ở cuối tệp module Python có tác dụng chính là gì?",
+    "expected_answer": "Dòng lệnh này xác định đoạn mã nào sẽ chạy khi module được thực thi trực tiếp như một chương trình chính, đồng thời ngăn đoạn mã đó chạy ngoài ý muốn khi module được import bởi chương trình khác.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 185,
+    "evidence_quote": "This statement indicates what code to run if the module is executed as a program (in other words, what code not to run if this module is imported by another program).",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q14",
+    "split": "dev",
+    "question_type": "rephrased",
+    "question": "Sự cố đụng độ tên (Name Collision) xảy ra khi nào khi import hàm từ module, và Python xử lý hàm trùng tên như thế nào?",
+    "expected_answer": "Đụng độ tên xảy ra khi một tên hàm được định nghĩa hoặc import nhiều lần. Python không báo lỗi mà sẽ sử dụng định nghĩa hàm mới nhất (gần nhất).",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_evidence": [
+      [{"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 169}],
+      [{"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 170}]
+    ],
+    "min_evidence": 1,
+    "evidence_quote": "A name collision occurs when a function is defined multiple times. If a function is defined more than once, the most recent definition is used.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q15",
+    "split": "dev",
+    "question_type": "direct",
+    "question": "Khóa (Key) trong Python Dictionary cần tuân thủ quy tắc gì về tính trùng lặp (duplicate) và kiểu dữ liệu (mutability)?",
+    "expected_answer": "Key trong Dictionary không được trùng lặp và bắt buộc phải là đối tượng bất biến (immutable).",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_evidence": [
+      {"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 227},
+      {"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 245}
+    ],
+    "min_evidence": 2,
+    "evidence_quote": "A dictionary object cannot hold duplicate key values. / A dictionary is a mutable object but keys in the dictionary must be immutable objects.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q16",
+    "split": "test",
+    "question_type": "direct",
+    "question": "Phương thức __init__() trong một lớp Python được gọi khi nào và từ khóa self đóng vai trò gì?",
+    "expected_answer": "__init__() là phương thức đặc biệt được tự động gọi mỗi khi một thể hiện (instance) mới của lớp được tạo. self tham chiếu đến thể hiện cụ thể đó để truy cập và khởi tạo các thuộc tính của thể hiện.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 251,
+    "evidence_quote": "__init__() is a special method that is called every time a new instance of a class is created. self refers to the instance of a class and is used in class methods to access the specific instance that called the method.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q17",
+    "split": "test",
+    "question_type": "rephrased",
+    "question": "Hãy so sánh và phân biệt mối quan hệ 'is-a' và quan hệ 'has-a' giữa các class trong Python?",
+    "expected_answer": "Quan hệ 'is-a' tồn tại giữa lớp con (subclass) và lớp cha (superclass) thông qua thừa kế (ví dụ: Daffodil is a Plant). Quan hệ 'has-a' tồn tại khi một lớp chứa một thể hiện của lớp khác làm thuộc tính (ví dụ: Employee has a Laptop).",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_evidence": [
+      {"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 287},
+      {"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 288}
+    ],
+    "min_evidence": 2,
+    "evidence_quote": "An is-a relationship exists between a subclass and a superclass... A has-a relationship exists between a class that contains another class.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q18",
+    "split": "test",
+    "question_type": "conditional_exception",
+    "question": "Trong phần 14.2 (Writing to files), sự khác biệt giữa hai chế độ mở tệp 'w' (Write) và 'a' (Append) khi áp dụng lên một tệp đã tồn tại sẵn dữ liệu là gì?",
+    "expected_answer": "Chế độ 'w' sẽ ghi đè và xóa sạch nội dung cũ của tệp. Chế độ 'a' giữ nguyên nội dung cũ và nối thêm dữ liệu mới vào cuối tệp. Nếu tệp chưa tồn tại, cả hai chế độ đều tự động tạo tệp mới.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_page": 313,
+    "evidence_quote": "'w' Write mode: Open the specified file for writing. If the file does not exist, then the file is created. If the file already exists, the contents of the file are overwritten. 'a' Append mode: Open the specified file for appending... If the file does not exist, then the file is created.",
+    "metadata_filter": {
+      "chapter": 14,
+      "section": "14.2"
+    }
+  },
+  {
+    "id": "Q19",
+    "split": "test",
+    "question_type": "direct",
+    "question": "Điểm khác biệt chính về tính đồng nhất của kiểu dữ liệu giữa mảng ndarray của NumPy và DataFrame của Pandas là gì?",
+    "expected_answer": "ndarray của NumPy là cấu trúc dữ liệu đồng nhất (homogeneous - tất cả phần tử/cột cùng kiểu dữ liệu), còn DataFrame của Pandas là cấu trúc dữ liệu không đồng nhất (heterogeneous - các cột có thể chứa các kiểu dữ liệu khác nhau).",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_evidence": [
+      {"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 333},
+      {"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 336}
+    ],
+    "min_evidence": 2,
+    "evidence_quote": "NumPy implements the ndarray object, which allows the creation of a multi-dimensional array of homogeneous data types... / DataFrame is a heterogeneous data structure where each column can have a different data type.",
+    "metadata_filter": null
+  },
+  {
+    "id": "Q20",
+    "split": "test",
+    "question_type": "conditional_exception",
+    "question": "Khi thực hiện nối chuỗi bằng toán tử + trong Python, điều kiện bắt buộc đối với một biến kiểu số (như int hoặc float) trước khi thực hiện phép nối là gì?",
+    "expected_answer": "Biến kiểu số bắt buộc phải được chuyển đổi (ép kiểu) thành kiểu chuỗi bằng hàm str() trước khi nối, nếu không Python sẽ báo lỗi TypeError.",
+    "gold_source_id": "Introduction_to_Python_Programming-WEB.pdf",
+    "gold_evidence": [
+      [{"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 19}],
+      [{"document_id": "Introduction_to_Python_Programming-WEB.pdf", "page": 63}]
+    ],
+    "min_evidence": 1,
+    "evidence_quote": "Strings can be concatenated with other types. Ex: '$' + str(cost).",
+    "metadata_filter": null
+  }
+]

@@ -16,7 +16,7 @@ Trong `agentic.py`, hiện thực:
 - `Controller.decide`: gọi model thật và trả `{action: "search", query: "..."}` hoặc `{action: "answer", answer: "... [chunk-id]", citations: ["chunk-id"]}`.
 - `Retriever.search`: tạo query embedding tương thích Day 6, truy vấn vector store thật và trả chunk theo [định dạng dữ liệu](../data/README.md).
 
-Tự viết chương trình nối hai phần với `run_agent`, hoặc thay thế bằng kiến trúc nhiều tool. Tham số `max_searches`, `top_k` và `budget` chỉ là mặc định của ví dụ, không phải giới hạn của đề. Xem `tests/test_agentic.py` để hiểu cách gọi; kết nối trong test là mock. Khung code kiểm tra citation ID có trong context, nhưng bạn phải tự đọc xem nguồn có hỗ trợ câu trả lời. Báo lỗi kết nối, không thay bằng kết quả giả.
+`Controller` nhận callback `decide_with_model(question, history)`; callback phải gọi model thật và trả một action đã chuẩn hóa. `Retriever(embedder, vector_store, strategy=...)` dùng trực tiếp giao diện `embed_query` và `search` của Day 6, chuyển các hit (`chunk_id`, `text`, `score`, `metadata`) sang schema agent. Với Day 6 hiện tại, `metadata` phải có `document_id`, `source`, `page`; chọn strategy đã được nạp vào PostgreSQL, ví dụ `A_fixed`, `B_paragraph` hoặc `C_paragraph_filter`. Khởi tạo `MyEmbedder` cùng model và `PgVectorStore` với database URL/chiều vector tương ứng index Day 6. Lỗi model, embedding hoặc database được truyền lên, không tạo fallback giả. Tự viết chương trình nối hai phần với `run_agent`, hoặc thay thế bằng kiến trúc nhiều tool. Tham số `max_searches`, `top_k` và `budget` chỉ là mặc định của ví dụ, không phải giới hạn của đề. Xem `tests/test_agentic.py` để hiểu cách gọi; kết nối trong test là mock. Khung code kiểm tra citation ID có trong context, nhưng bạn phải tự đọc xem nguồn có hỗ trợ câu trả lời.
 
 ## 2. Chạy TF-IDF baseline
 
@@ -28,6 +28,14 @@ python3 starter/baseline.py --chunks data/example_chunks.json --questions data/e
 ```
 
 Kết quả có `summary.json` và `traces.json`. Dữ liệu mẫu chỉ có một câu, không đủ để nộp bài. TF-IDF là lexical retrieval, không dùng filter và không thay dense retrieval.
+
+Để so sánh retrieval Day 6 thật với cùng bộ nhãn vật lý, chạy benchmark trên dev trước:
+
+```bash
+python starter/retrieval_benchmark.py --split dev --methods tfidf dense hybrid --budget 3200 --candidate-k 10 --top-k 3 --output starter/data/retrieval-benchmark/dev
+```
+
+Dense/hybrid cần Day 6 PostgreSQL chạy, `DATABASE_URL` trong `starter/.env` và repo Day 6 ở đường dẫn mặc định (hoặc truyền `--day6-starter`). Có thể thử `dense_b`, `dense_c_filter` và `hybrid_b` như các biến thể riêng. Chốt phương pháp trên dev rồi mới chạy `--split test` với output khác.
 
 ## 3. Dùng dữ liệu Day 6
 
@@ -47,7 +55,7 @@ Thay phần trong `< >` bằng đường dẫn thật. Script chỉ đổi tên 
 Sau khi chạy agent thật và tự chấm, chuẩn bị ba JSON array:
 
 - `cases.json`: mỗi câu có `id`, `split`, `answerable` (`true` nếu có đủ evidence).
-- `traces.json`: mỗi kết quả có `query_id`, `status` (`answered`, `abstain`, `error`), `events`, `citations`. Thêm `query_id` vào kết quả `run_agent`; lỗi kết nối ghi riêng với `status: "error"`. Script đếm tool use qua event `search`: nếu dùng nhiều tool, chuẩn hóa mỗi lượt retrieval về event này và ghi tên tool trong trường khác, hoặc tự viết metric tương đương.
+- `traces.json`: mỗi kết quả có `query_id`, `status` (`answered`, `abstain`, `error`), `events`, `citations`. Truyền `query_id=case["id"]` vào `run_agent` để kết quả có ID tương ứng; lỗi kết nối ghi riêng với `status: "error"`. Script đếm tool use qua event `search`: nếu dùng nhiều tool, chuẩn hóa mỗi lượt retrieval về event này và ghi tên tool trong trường khác, hoặc tự viết metric tương đương.
 - `reviews.json`: mỗi nhãn có `query_id`, `citation_support` là danh sách đúng/sai ứng với từng citation. Câu có đáp án cần `answer_grade` 0–2 theo [BENCHMARK.md](../BENCHMARK.md); nếu bị từ chối, chấm 0. Câu thiếu evidence cần `abstention_correct` (`true`/`false`) do người chấm xác nhận. Lần chạy lỗi không cần nhãn.
 
 ```bash
@@ -55,6 +63,17 @@ python3 starter/agent_metrics.py --cases <cases.json> --traces <traces.json> --r
 ```
 
 Thay đường dẫn trong `< >`. Script tổng hợp nhãn bạn đã chấm, không tự đánh giá nội dung. Mẫu số bằng 0 nghĩa là không áp dụng. Lỗi kết nối được báo riêng, không tính vào chất lượng; giữ trace và nhãn để đối chiếu.
+
+Để chạy agent thật với Gemini và TF-IDF trên cùng corpus A_fixed, cấu hình API tại `starter/.env` bằng `GEMINI_API_KEY` và `GEMINI_MODEL`, rồi chạy từ thư mục gốc:
+
+```bash
+python starter/run_agent_eval.py --split dev --budget 800 --output starter/data/agent-eval/dev-baseline
+python starter/run_agent_eval.py --split dev --budget 3200 --output starter/data/agent-eval/dev-selected
+python starter/run_agent_eval.py --split test --budget 800 --output starter/data/agent-eval/test-baseline
+python starter/run_agent_eval.py --split test --budget 3200 --output starter/data/agent-eval/test-selected
+```
+
+Mỗi case hoàn tất được ghi ngay vào `traces.json` và `summary.json`; runner đặt timeout request 120 giây, không ghi API key và để chi phí là chưa xác định nếu SDK không cung cấp thông tin billing. Thư mục output không rỗng sẽ không bị ghi đè. Trace chưa phải nhãn đánh giá: phải đọc context, câu trả lời và từng citation rồi mới tạo `reviews.json`.
 
 ## Lưu ý
 

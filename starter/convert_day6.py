@@ -38,7 +38,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     for name, data in (('chunks.json', chunks), ('questions.json', questions)):
         (args.output / name).write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    print('Đã chuyển đổi; kiểm tra output và chạy baseline trên dev để kiểm chứng.')
+    print('Conversion complete. Check the output and run the baseline on dev.')
 
 
 if __name__ == '__main__':

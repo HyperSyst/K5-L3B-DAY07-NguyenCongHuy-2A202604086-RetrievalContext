@@ -3,7 +3,7 @@ import sys
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'starter'))
-from agentic import run_agent
+from agentic import Controller as ModelController, Retriever as DenseRetriever, run_agent
 
 CHUNK = {'id': 'c1', 'text': 'Hoàn tiền trong 7 ngày.', 'source_id': 'doc',
          'source': 'doc.pdf', 'page': 1, 'score': 0.8, 'metadata': {}}
@@ -18,11 +18,65 @@ class Retriever:
         self.calls.append((query, filters, top_k)); return self.results
 
 class AgentTests(unittest.TestCase):
+    def test_controller_calls_model_adapter_and_validates_normalized_action(self):
+        seen = []
+        controller = ModelController(
+            lambda question, history: seen.append((question, history)) or
+            {'action': 'search', 'query': '  hoàn tiền  '}
+        )
+        history = [{'tool': 'search', 'context': '...'}]
+        self.assertEqual(controller.decide('Câu hỏi?', history),
+                         {'action': 'search', 'query': 'hoàn tiền'})
+        self.assertEqual(seen, [('Câu hỏi?', history)])
+        with self.assertRaises(ValueError):
+            ModelController(lambda question, history: {'action': 'search', 'query': ''}).decide('q', [])
+
+    def test_retriever_embeds_forwards_filters_and_validates_chunks(self):
+        seen = []
+
+        class Embedder:
+            def embed_query(self, query):
+                self.query = query
+                return [0.1, 0.2]
+
+        class Store:
+            def search(self, *, strategy, query_vector, top_k, filters):
+                seen.append((strategy, query_vector, top_k, filters))
+                return [{
+                    'chunk_id': 'c1',
+                    'text': CHUNK['text'],
+                    'score': 0.8,
+                    'metadata': {'document_id': 'doc', 'source': 'doc.pdf', 'page': 1},
+                }]
+
+        embedder = Embedder()
+        retriever = DenseRetriever(embedder, Store(), strategy='B_paragraph')
+        filters = {'year': 2025}
+        self.assertEqual(
+            retriever.search('  hoàn tiền  ', filters=filters, top_k=5),
+            [{
+                **CHUNK,
+                'score': 0.8,
+                'metadata': {'document_id': 'doc', 'source': 'doc.pdf', 'page': 1},
+            }],
+        )
+        self.assertEqual(embedder.query, 'hoàn tiền')
+        self.assertEqual(seen, [('B_paragraph', [0.1, 0.2], 5, filters)])
+
+        class InvalidEmbedder:
+            def embed_query(self, query):
+                return [float('nan')]
+
+        invalid = DenseRetriever(InvalidEmbedder(), Store(), strategy='B_paragraph')
+        with self.assertRaises(ValueError):
+            invalid.search('q', filters=None, top_k=1)
+
     def test_agent_searches_and_cites_actual_context(self):
         c = Controller([{'action': 'search', 'query': 'hoàn tiền'},
                         {'action': 'answer', 'answer': '7 ngày [c1]', 'citations': ['c1']}])
-        r = Retriever([CHUNK]); result = run_agent('Hoàn tiền?', c, r, filters={'year': 2025})
+        r = Retriever([CHUNK]);         result = run_agent('Hoàn tiền?', c, r, filters={'year': 2025}, query_id='q1')
         self.assertEqual(result['status'], 'answered')
+        self.assertEqual(result['query_id'], 'q1')
         self.assertEqual(result['citations'], ['c1'])
         self.assertEqual(r.calls, [('hoàn tiền', {'year': 2025}, 3)])
         self.assertEqual(result['events'][0]['context_ids'], ['c1'])
